@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>My Bookings</h2>
+{% if bookings %}
+<table class="table">
+    <thead><tr><th>Event</th><th>Ticket</th><th>Qty</th><th>Booked on</th></tr></thead>
+    <tbody>
+        {% for b in bookings %}
+        <tr>
+            <td><a href="{% url 'events:event_detail' b.event.pk %}">{{ b.event.title }}</a></td>
+            <td>{{ b.ticket_type.name }}</td>
+            <td>{{ b.quantity }}</td>
+            <td>{{ b.booked_at|date:"M d, Y" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No bookings yet.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Browse Events</h2>
+
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-4">
+        <input class="form-control" type="text" name="q" placeholder="Search events..." value="{{ query }}">
+    </div>
+    <div class="col-md-3">
+        <select class="form-select" name="category">
+            <option value="">All categories</option>
+            {% for cat in categories %}
+            <option value="{{ cat.slug }}" {% if cat.slug == selected_category %}selected{% endif %}>{{ cat.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-3">
+        <input class="form-control" type="text" name="city" placeholder="City" value="{{ city }}">
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary w-100" type="submit">Search</button>
+    </div>
+</form>
+
+{% if events %}
+<div class="row">
+    {% for event in events %}
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ event.title }}</h5>
+                <p class="card-subtitle text-muted mb-2">{{ event.category.name }} · {{ event.city }}</p>
+                <p class="card-text">{{ event.date }} — {{ event.venue }}</p>
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'events:event_detail' event.pk %}">View details</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No events found.</p>
+{% endif %}
+{% endblock %}
