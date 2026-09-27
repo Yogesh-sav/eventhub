@@ -20,7 +20,7 @@
     {% csrf_token %}
     <select name="ticket_type" class="form-select mb-2" style="max-width: 300px;">
         {% for t in event.ticket_types.all %}
-        <option value="{{ t.pk }}">{{ t.name }} — ${{ t.price }} ({{ t.tickets_available }} left)</option>
+        <option value="{{ t.pk }}">{{ t.name }} — Rs. {{ t.price }} ({{ t.tickets_available }} left)</option>
         {% endfor %}
     </select>
     <input type="number" name="quantity" value="1" min="1" class="form-control mb-2" style="max-width: 100px;">
@@ -29,7 +29,7 @@
 {% else %}
 <ul>
     {% for t in event.ticket_types.all %}
-    <li>{{ t.name }} — ${{ t.price }} ({{ t.tickets_available }} left)</li>
+    <li>{{ t.name }} — Rs. {{ t.price }} ({{ t.tickets_available }} left)</li>
     {% endfor %}
 </ul>
 <p><a href="{% url 'accounts:login' %}">Log in</a> to book.</p>
