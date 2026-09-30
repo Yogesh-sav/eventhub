@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Recommended for You</h2>
+{% if recommendations %}
+<div class="row">
+    {% for r in recommendations %}
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ r.event.title }}</h5>
+                <p class="card-subtitle text-muted mb-2">{{ r.event.category.name }} · {{ r.event.city }}</p>
+                <p class="card-text">{{ r.event.date }} — {{ r.event.venue }}</p>
+                <span class="badge bg-info text-dark mb-2">{{ r.reason }}</span><br>
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'events:event_detail' r.event.pk %}">View details</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No recommendations yet — browse a few events to help us learn your interests!</p>
+{% endif %}
+{% endblock %}

@@ -157,3 +157,8 @@ def event_save_toggle(request, pk):
 def my_bookings(request):
     bookings = Booking.objects.filter(user=request.user, status='confirmed').select_related('event', 'ticket_type')
     return render(request, 'events/my_bookings.html', {'bookings': bookings})
+
+@organizer_required
+def dashboard(request):
+    events = Event.objects.filter(organizer=request.user).select_related('popularity_prediction')
+    return render(request, 'events/dashboard.html', {'events': events})

@@ -8,7 +8,7 @@
 {% if events %}
 <table class="table">
     <thead>
-        <tr><th>Title</th><th>Date</th><th>Status</th><th>Views</th><th>Registrations</th><th></th></tr>
+        <tr><th>Title</th><th>Date</th><th>Status</th><th>Views</th><th>Registrations</th><th>Popularity</th><th></th></tr>
     </thead>
     <tbody>
         {% for event in events %}
@@ -17,7 +17,18 @@
             <td>{{ event.date }}</td>
             <td>{{ event.get_status_display }}</td>
             <td>{{ event.views }}</td>
-            <td>{{ event.registration_count }}</td>
+                        <td>{{ event.registration_count }}</td>
+            <td>
+                {% if event.popularity_prediction %}
+                    {% if event.popularity_prediction.predicted_label %}
+                        <span class="badge bg-success">Likely popular ({% widthratio event.popularity_prediction.predicted_probability 1 100 %}%)</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{% widthratio event.popularity_prediction.predicted_probability 1 100 %}% confidence</span>
+                    {% endif %}
+                {% else %}
+                    <span class="text-muted small">Not predicted yet</span>
+                {% endif %}
+            </td>
             <td>
                 <a href="{% url 'events:event_edit' event.pk %}">Edit</a> |
                 <a href="{% url 'events:event_delete' event.pk %}">Delete</a>

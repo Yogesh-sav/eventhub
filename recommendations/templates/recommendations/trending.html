@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Trending Events</h2>
+<p class="text-muted">Ranked by engagement in the last 14 days — not personalized.</p>
+
+{% if trending %}
+<div class="row">
+    {% for item in trending %}
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ item.event.title }}</h5>
+                <p class="card-subtitle text-muted mb-2">{{ item.event.category.name }} · {{ item.event.city }}</p>
+                <p class="card-text">{{ item.event.date }} — {{ item.event.venue }}</p>
+                <span class="badge bg-warning text-dark mb-2">Trending score: {{ item.score }}</span><br>
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'events:event_detail' item.event.pk %}">View details</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>Nothing trending in the last 14 days yet.</p>
+{% endif %}
+{% endblock %}
