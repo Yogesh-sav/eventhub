@@ -10,7 +10,9 @@
                 <h5 class="card-title">{{ r.event.title }}</h5>
                 <p class="card-subtitle text-muted mb-2">{{ r.event.category.name }} · {{ r.event.city }}</p>
                 <p class="card-text">{{ r.event.date }} — {{ r.event.venue }}</p>
-                <span class="badge bg-info text-dark mb-2">{{ r.reason }}</span><br>
+                                <div class="alert alert-info py-2 px-3 mb-2" style="font-size: 0.9rem;">
+                    <strong>Why this event?</strong><br>{{ r.reason }}
+                </div>
                 <a class="btn btn-outline-primary btn-sm" href="{% url 'events:event_detail' r.event.pk %}">View details</a>
             </div>
         </div>

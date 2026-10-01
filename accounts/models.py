@@ -14,6 +14,7 @@ class Profile(models.Model):
     bio = models.TextField(blank=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     interests = models.ManyToManyField('events.Category', blank=True, related_name='interested_profiles')
+    onboarding_completed = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.user.username} ({self.role})'

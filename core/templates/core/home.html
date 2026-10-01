@@ -1,5 +1,45 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Welcome to EventHub</h1>
-<p>Foundation is live — events, recommendations and trending come next.</p>
+<div class="p-5 mb-4 hero-gradient">
+    <h1 class="display-5 fw-bold">Discover events that match you</h1>
+    <p class="col-md-8 fs-5">Browse, book, and get recommendations tailored to your interests — powered by real engagement data.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'events:event_list' %}">Browse Events</a>
+</div>
+
+{% if trending %}
+<h3>🔥 Trending Now</h3>
+<div class="row mb-4">
+    {% for item in trending %}
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ item.event.title }}</h5>
+                <p class="mb-2">{% cycle 'cat-pill-0' 'cat-pill-1' 'cat-pill-2' 'cat-pill-3' 'cat-pill-4' 'cat-pill-5' as pillclass %}<span class="cat-pill {{ pillclass }}">{{ item.event.category.name }}</span> <span class="text-muted">· {{ item.event.city }}</span></p>
+                <a class="btn btn-sm btn-outline-primary" href="{% url 'events:event_detail' item.event.pk %}">View</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<h3>Upcoming Events</h3>
+{% if upcoming %}
+<div class="row">
+    {% for event in upcoming %}
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ event.title }}</h5>
+                <p class="mb-2">{% cycle 'cat-pill-0' 'cat-pill-1' 'cat-pill-2' 'cat-pill-3' 'cat-pill-4' 'cat-pill-5' as pillclass2 %}<span class="cat-pill {{ pillclass2 }}">{{ event.category.name }}</span> <span class="text-muted">· {{ event.city }}</span></p>x
+                <p class="small">{{ event.date }}</p>
+                <a class="btn btn-sm btn-outline-primary" href="{% url 'events:event_detail' event.pk %}">View</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="text-muted">No events yet — check back soon.</p>
+{% endif %}
 {% endblock %}

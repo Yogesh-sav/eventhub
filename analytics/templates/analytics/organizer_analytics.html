@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>My Analytics</h2>
+
+<div class="row mb-4">
+    <div class="col-md-3"><div class="card text-center p-3"><h3>{{ event_count }}</h3><p class="text-muted mb-0">Events</p></div></div>
+    <div class="col-md-3"><div class="card text-center p-3"><h3>{{ total_views }}</h3><p class="text-muted mb-0">Total Views</p></div></div>
+    <div class="col-md-3"><div class="card text-center p-3"><h3>{{ total_registrations }}</h3><p class="text-muted mb-0">Total Registrations</p></div></div>
+    <div class="col-md-3"><div class="card text-center p-3"><h3>{{ avg_utilization }}%</h3><p class="text-muted mb-0">Avg. Capacity Utilization</p></div></div>
+</div>
+
+<h4>Registration Trend (last 30 days)</h4>
+<canvas id="trendChart" height="80"></canvas>
+
+<h4 class="mt-4">Per-Event Breakdown</h4>
+<table class="table">
+    <thead><tr><th>Event</th><th>Views</th><th>Registrations</th><th>Capacity</th><th>Utilization</th><th>Popularity</th></tr></thead>
+    <tbody>
+    {% for s in event_stats %}
+        <tr>
+            <td>{{ s.event.title }}</td>
+            <td>{{ s.event.views }}</td>
+            <td>{{ s.event.registration_count }}</td>
+            <td>{{ s.capacity }}</td>
+            <td>{{ s.utilization }}%</td>
+            <td>
+                {% if s.prediction %}
+                    {% if s.prediction.predicted_label %}
+                        <span class="badge bg-success">Likely popular</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Low confidence</span>
+                    {% endif %}
+                {% else %}
+                    <span class="text-muted small">—</span>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+    new Chart(document.getElementById('trendChart'), {
+        type: 'line',
+        data: {
+            labels: {{ trend_labels|safe }},
+            datasets: [{ label: 'Bookings per day', data: {{ trend_values|safe }}, borderColor: '#0d6efd', tension: 0.2 }]
+        },
+        options: { responsive: true }
+    });
+</script>
+{% endblock %}

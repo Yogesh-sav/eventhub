@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Platform Analytics</h2>
+
+<div class="row mb-4">
+    <div class="col-md-3"><div class="card text-center p-3"><h3>{{ total_users }}</h3><p class="text-muted mb-0">Users</p></div></div>
+    <div class="col-md-3"><div class="card text-center p-3"><h3>{{ total_organizers }}</h3><p class="text-muted mb-0">Organizers</p></div></div>
+    <div class="col-md-3"><div class="card text-center p-3"><h3>{{ total_events }}</h3><p class="text-muted mb-0">Events</p></div></div>
+    <div class="col-md-3"><div class="card text-center p-3"><h3>{{ total_bookings }}</h3><p class="text-muted mb-0">Bookings</p></div></div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Events by Category</h4>
+        <canvas id="categoryChart"></canvas>
+    </div>
+    <div class="col-md-6">
+        <h4>Platform Engagement (last 30 days)</h4>
+        <canvas id="engagementChart"></canvas>
+    </div>
+</div>
+
+<h4 class="mt-4">Most Viewed Events</h4>
+<table class="table">
+    <thead><tr><th>Title</th><th>Category</th><th>Views</th></tr></thead>
+    <tbody>
+    {% for e in most_viewed %}
+        <tr><td>{{ e.title }}</td><td>{{ e.category.name }}</td><td>{{ e.views }}</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+    new Chart(document.getElementById('categoryChart'), {
+        type: 'bar',
+        data: {
+            labels: [{% for c in category_counts %}'{{ c.category__name }}',{% endfor %}],
+            datasets: [{ label: 'Events', data: [{% for c in category_counts %}{{ c.count }},{% endfor %}], backgroundColor: '#0d6efd' }]
+        }
+    });
+    new Chart(document.getElementById('engagementChart'), {
+        type: 'line',
+        data: {
+            labels: {{ engagement_labels|safe }},
+            datasets: [{ label: 'Interactions per day', data: {{ engagement_values|safe }}, borderColor: '#198754', tension: 0.2 }]
+        }
+    });
+</script>
+{% endblock %}

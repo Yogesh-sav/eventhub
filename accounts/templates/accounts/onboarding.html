@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <h2>What are you into?</h2>
+    <p class="text-muted">Pick a few categories — this helps us recommend events you'll actually like. You can change this anytime from your profile.</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+        {% for checkbox in form.interests %}
+            <div class="col-md-6 mb-2">
+                <div class="form-check">
+                    {{ checkbox.tag }}
+                    <label class="form-check-label" for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        <button class="btn btn-primary mt-3" type="submit">Continue</button>
+        <a href="{% url 'core:home' %}" class="btn btn-link mt-3" onclick="document.getElementById('skip-form').submit(); return false;">Skip for now</a>
+    </form>
+    <form id="skip-form" method="post" action="{% url 'accounts:onboarding' %}" style="display:none;">
+        {% csrf_token %}
+    </form>
+  </div>
+</div>
+{% endblock %}

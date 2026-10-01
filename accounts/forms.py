@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
+from events.models import Category
 from .models import Profile
 
 
@@ -20,3 +20,11 @@ class SignUpForm(UserCreationForm):
             user.profile.role = self.cleaned_data['role']
             user.profile.save()
         return user
+
+
+class OnboardingForm(forms.Form):
+    interests = forms.ModelMultipleChoiceField(
+        queryset=Category.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+    )
