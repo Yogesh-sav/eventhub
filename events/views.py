@@ -10,6 +10,7 @@ from .models import Category
 from django.db.models import F
 from django.contrib.auth.decorators import login_required
 from .models import SavedEvent, EventInteraction, TicketType, Booking
+from datetime import date as date_cls
 
 @organizer_required
 def dashboard(request):
@@ -73,8 +74,11 @@ def event_delete(request, pk):
         return redirect('events:dashboard')
     return render(request, 'events/event_confirm_delete.html', {'event': event})
 
+
+
+
 def event_list(request):
-    events = Event.objects.filter(status=Event.Status.PUBLISHED)
+    events = Event.objects.filter(status=Event.Status.PUBLISHED, date__gte=date_cls.today())
 
     query = request.GET.get('q', '').strip()
     if query:
@@ -101,7 +105,7 @@ def event_list(request):
     })
 
 def event_detail(request, pk):
-    event = get_object_or_404(Event, pk=pk, status=Event.Status.PUBLISHED)
+    event = get_object_or_404(Event, pk=pk, status=Event.Status.PUBLISHED, date__gte=date_cls.today())
     event.views = F('views') + 1
     event.save(update_fields=['views'])
     event.refresh_from_db(fields=['views'])
@@ -117,8 +121,7 @@ def event_detail(request, pk):
 
 @login_required
 def event_book(request, pk):
-    event = get_object_or_404(Event, pk=pk, status=Event.Status.PUBLISHED)
-
+    event = get_object_or_404(Event, pk=pk, status=Event.Status.PUBLISHED, date__gte=date_cls.today())
     if request.method == 'POST':
         ticket_type_id = request.POST.get('ticket_type')
         quantity = int(request.POST.get('quantity', 1))
@@ -162,3 +165,30 @@ def my_bookings(request):
 def dashboard(request):
     events = Event.objects.filter(organizer=request.user).select_related('popularity_prediction')
     return render(request, 'events/dashboard.html', {'events': events})
+
+@login_required
+def event_checkout(request, pk):
+    event = get_object_or_404(Event, pk=pk, status=Event.Status.PUBLISHED, date__gte=date_cls.today())
+    ticket_type_id = request.POST.get('ticket_type')
+    quantity = int(request.POST.get('quantity', 1))
+    ticket_type = get_object_or_404(TicketType, pk=ticket_type_id, event=event)
+
+    if quantity > ticket_type.tickets_available:
+        messages.error(request, 'Not enough tickets available.')
+        return redirect('events:event_detail', pk=event.pk)
+
+    total = ticket_type.price * quantity
+    return render(request, 'events/checkout.html', {
+        'event': event, 'ticket_type': ticket_type, 'quantity': quantity, 'total': total,
+    })
+
+@login_required
+def saved_events(request):
+    saved = SavedEvent.objects.filter(user=request.user).select_related('event__category')
+    return render(request, 'events/saved_events.html', {'saved': saved})
+
+def closed_events(request):
+    events = Event.objects.filter(
+        status=Event.Status.PUBLISHED, date__lt=date_cls.today()
+    ).order_by('-date')
+    return render(request, 'events/closed_events.html', {'events': events})

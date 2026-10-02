@@ -16,7 +16,7 @@
 
 <h4 class="mt-4">Ticket Types</h4>
 {% if user.is_authenticated %}
-<form action="{% url 'events:event_book' event.pk %}" method="post">
+<form action="{% url 'events:event_checkout' event.pk %}" method="post">
     {% csrf_token %}
     <select name="ticket_type" class="form-select mb-2" style="max-width: 300px;">
         {% for t in event.ticket_types.all %}

@@ -17,3 +17,4 @@ media/
 .DS_Store
 Thumbs.db
 dataset/
+.ipynb_checkpoints/

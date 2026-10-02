@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <h2>Terms &amp; Conditions</h2>
+    <p class="text-muted">Last updated {% now "F Y" %}</p>
+    <p>By using EventHub, you agree to the following terms:</p>
+
+    <h5 class="mt-4">1. Accounts</h5>
+    <ol>
+        <li>You must provide accurate information when creating an account and booking events.</li>
+        <li>You are responsible for keeping your login credentials confidential, and for all activity under your account.</li>
+        <li>You may hold either a User or Organizer account; Organizer access is intended for people genuinely creating and managing events.</li>
+    </ol>
+
+    <h5 class="mt-4">2. Events &amp; Bookings</h5>
+    <ol start="4">
+        <li>Ticket prices are set by organizers and shown in NPR (Rs.).</li>
+        <li>EventHub is a demonstration platform built for academic purposes and does not process real payments or issue real tickets.</li>
+        <li>Organizers are responsible for the accuracy of their event listings, including date, venue, and pricing.</li>
+        <li>EventHub reserves the right to remove listings that are inaccurate, misleading, or violate platform guidelines.</li>
+    </ol>
+
+    <h5 class="mt-4">3. Data &amp; Recommendations</h5>
+    <ol start="8">
+        <li>EventHub uses your activity (views, saves, bookings) to personalize event recommendations shown to you.</li>
+        <li>Aggregated, non-identifying usage data may be used to improve platform features such as trending events and popularity predictions.</li>
+        <li>Your data is not sold to third parties.</li>
+    </ol>
+
+    <h5 class="mt-4">4. Conduct</h5>
+    <ol start="11">
+        <li>You agree not to use EventHub to post false, harmful, or misleading event information.</li>
+        <li>Accounts found misusing the platform — including spam listings, fraudulent bookings, or abuse of other users — may be suspended or terminated.</li>
+    </ol>
+
+    <h5 class="mt-4">5. Changes</h5>
+    <ol start="13">
+        <li>These terms may be updated as the platform evolves. Continued use of EventHub after changes constitutes acceptance of the updated terms.</li>
+    </ol>
+
+    <a href="{% url 'core:home' %}" class="btn btn-outline-primary mt-3">Back to Home</a>
+  </div>
+</div>
+{% endblock %}

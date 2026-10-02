@@ -11,7 +11,7 @@ class SignupTests(TestCase):
         response = self.client.post(reverse('accounts:signup'), {
             'username': 'newuser', 'email': 'new@example.com',
             'password1': 'ComplexPass123!', 'password2': 'ComplexPass123!',
-            'role': Profile.Role.USER,
+            'role': Profile.Role.USER, 'agree_to_terms': True,
         })
         self.assertTrue(User.objects.filter(username='newuser').exists())
         user = User.objects.get(username='newuser')
@@ -21,7 +21,7 @@ class SignupTests(TestCase):
         response = self.client.post(reverse('accounts:signup'), {
             'username': 'newuser2', 'email': 'new2@example.com',
             'password1': 'ComplexPass123!', 'password2': 'ComplexPass123!',
-            'role': Profile.Role.ORGANIZER,
+            'role': Profile.Role.ORGANIZER, 'agree_to_terms': True,
         })
         self.assertRedirects(response, reverse('accounts:onboarding'))
 
@@ -29,7 +29,7 @@ class SignupTests(TestCase):
         self.client.post(reverse('accounts:signup'), {
             'username': 'orguser', 'email': 'org@example.com',
             'password1': 'ComplexPass123!', 'password2': 'ComplexPass123!',
-            'role': Profile.Role.ORGANIZER,
+            'role': Profile.Role.ORGANIZER, 'agree_to_terms': True,
         })
         user = User.objects.get(username='orguser')
         self.assertTrue(user.profile.is_organizer)

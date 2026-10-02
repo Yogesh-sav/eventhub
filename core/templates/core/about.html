@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <h2>About EventHub</h2>
+    <p class="fs-5">We started EventHub because finding things to do shouldn't feel like a second job. Endless listings, no sense of what's actually worth your evening, and zero connection to what you're into — we built something better.</p>
+
+    <h5 class="mt-4">Our mission</h5>
+    <p>Nepal has an incredible, fast-growing events scene — concerts, festivals, workshops, community gatherings — but discovering the right one has always meant scrolling through everything and hoping something sticks. EventHub exists to close that gap: a platform that actually learns what you care about, instead of showing everyone the same list.</p>
+
+    <h5 class="mt-4">How it works</h5>
+    <p>Every time you browse, save, or book an event, EventHub quietly learns a little more about what you're into. That feeds into recommendations you can actually trust — and every suggestion comes with a reason, so it never feels like a black box. Pair that with real-time trending (based on what's genuinely picking up momentum right now, not stale view counts from months ago), and you've got a platform that gets smarter the more you use it.</p>
+
+    <h5 class="mt-4">Built for organizers too</h5>
+    <p>EventHub isn't just for people looking for their next night out. Organizers get real visibility into how their events are performing — views, registrations, and a popularity signal that helps them plan with more confidence, not guesswork.</p>
+
+    <h5 class="mt-4">What we stand for</h5>
+    <ul>
+        <li><strong>Transparency</strong> — you'll always know why we're showing you something.</li>
+        <li><strong>Local-first</strong> — pricing in NPR, built around how events actually happen in Nepal.</li>
+        <li><strong>Always improving</strong> — the more EventHub is used, the better it gets.</li>
+    </ul>
+
+    <p class="mt-4">We're just getting started. Thanks for being part of it.</p>
+
+    <a href="{% url 'core:home' %}" class="btn btn-outline-primary mt-3">Back to Home</a>
+  </div>
+</div>
+{% endblock %}

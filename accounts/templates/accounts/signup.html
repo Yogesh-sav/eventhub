@@ -3,7 +3,21 @@
 <h2>Sign up</h2>
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-primary" type="submit">Create account</button>
+    {% for field in form %}
+        {% if field.name != 'agree_to_terms' %}
+            <div class="mb-3">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}<div class="text-danger small">{{ field.errors }}</div>{% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div class="form-check mb-3">
+        {{ form.agree_to_terms }}
+        <label class="form-check-label" for="{{ form.agree_to_terms.id_for_label }}">
+            I agree to the <a href="{% url 'core:terms' %}" target="_blank">Terms &amp; Conditions</a>
+        </label>
+    </div>
+    <button class="btn btn-primary w-100" type="submit">Create account</button>
 </form>
 {% endblock %}

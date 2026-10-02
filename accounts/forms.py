@@ -28,3 +28,15 @@ class OnboardingForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         required=False,
     )
+
+class SignUpForm(UserCreationForm):
+    role = forms.ChoiceField(choices=Profile.Role.choices, widget=forms.RadioSelect)
+    email = forms.EmailField(required=True)
+    agree_to_terms = forms.BooleanField(
+        required=True,
+        error_messages={'required': 'You must accept the Terms & Conditions to create an account.'}
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2', 'role']

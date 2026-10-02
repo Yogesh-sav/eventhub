@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<p class="section-label">Your list</p>
+<h2>Saved Events</h2>
+{% if saved %}
+<div class="row">
+    {% for s in saved %}
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ s.event.title }}</h5>
+                <p class="mb-2"><span class="cat-pill cat-pill-0">{{ s.event.category.name }}</span> <span class="text-muted">· {{ s.event.city }}</span></p>
+                <p class="small text-muted">{{ s.event.date }}</p>
+                <a class="btn btn-sm btn-outline-primary" href="{% url 'events:event_detail' s.event.pk %}">View</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="text-muted">Nothing saved yet — tap the save button on any event to keep track of it here.</p>
+<a href="{% url 'events:event_list' %}" class="btn btn-outline-primary">Browse Events</a>
+{% endif %}
+{% endblock %}
