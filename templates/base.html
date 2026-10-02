@@ -90,7 +90,6 @@
         </form>
         <div class="ms-auto d-flex align-items-center flex-wrap">
             {% if user.is_authenticated %}
-                <a class="text-light me-3" href="{% url 'events:closed_events' %}">Closed Events</a>
                 <a class="text-light me-3" href="{% url 'events:my_bookings' %}">My Bookings</a>
                 <a class="text-light me-3" href="{% url 'events:saved_events' %}">Saved</a>
                 <a class="text-light me-3" href="{% url 'recommendations:recommended_for_you' %}">Recommended</a>
